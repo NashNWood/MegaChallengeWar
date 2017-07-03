@@ -9,30 +9,28 @@ namespace MegaChallengeWar
     {
         private Player _player1;
         private Player _player2;
-        private List<Card> _bounty;
 
         public Game(string player1Name, string player2Name)
         {
             _player1 = new Player { Name = player1Name };
-            _player2 = new Player { Name = player2Name };
-            _bounty = new List<Card>();
-            
-
+            _player2 = new Player { Name = player2Name }; 
         }
 
         public string Play()
         {
             Deck deck = new Deck();
-           string result = deck.Deal(_player1, _player2);
 
+            string result = "<h3>Dealing Cards...</h3>";
+            result += deck.Deal(_player1, _player2);
+
+            result += "<h3>Begin Battle...</h3>";
             int round = 0;
+
             while (_player1.Cards.Count != 0 && _player2.Cards.Count != 0)
             {
-                // Grabs the top card off the deck
-                Card player1Card = getCard(_player1);
-                Card player2Card = getCard(_player2);
 
-                performEvaluation(_player1, _player2, player1Card, player2Card);
+                Battle battle = new Battle();
+                result += battle.performBattle(_player1, _player2);
 
                 round++;
 
@@ -45,34 +43,16 @@ namespace MegaChallengeWar
             return result;
         }
 
-        private Card getCard(Player player)
-        {
-            Card card = player.Cards.ElementAt(0);
-            player.Cards.Remove(card);
-            _bounty.Add(card);
-            return card;
-        }
-        
-        // Determines who the winer is and who the bounty is assigned to
-        private void performEvaluation(Player player1, Player player2, Card card1, Card card2)
-
-        {
-            if (card1.cardValue() > card2.cardValue())
-                player1.Cards.AddRange(_bounty);
-            else
-                player2.Cards.AddRange(_bounty);
-            _bounty.Clear();   
-        }
 
         private string determineWinner()
         {
             string result = "";
             if (_player1.Cards.Count > _player2.Cards.Count)
-                result += "<br/>Player 1 Wins";
+                result += "<br/><span style = color:red;font-weight:bolder;>Player 1 Wins</span>";
             else
-                result += "<br/>Player 2 Wins";
+                result += "<br/><span style = color:blue;font-weight:bolder;>Player 2 Wins</span>";
 
-            result += "<br/>Player 1: " + _player1.Cards.Count + "Player 2: " + _player2.Cards.Count;
+            result += "<br/><span style = color:red;font-weight:bolder;>Player 1: " + _player1.Cards.Count + "</span><br/><span style = color:blue;font-weight:bolder;>Player 2: " + _player2.Cards.Count + "</span>";
             return result;
 
         }

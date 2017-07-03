@@ -10,7 +10,7 @@
     <form id="form1" runat="server">
     <div>
     
-        Play War!<br />
+        Want to play War?<br />
         <br />
         <asp:Button ID="playButton" runat="server" OnClick="Button1_Click" Text="Play War!" />
         <br />
